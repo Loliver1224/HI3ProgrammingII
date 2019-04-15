@@ -12,7 +12,7 @@ int main(void){
     int n;
     do{
         scanf("%d", &n);
-    }while(n<0 || n>31);
+    }while(n<0 || n>12);
     printf("%d\n", factrial(n));
     return 0;
 }

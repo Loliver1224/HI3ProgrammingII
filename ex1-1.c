@@ -3,8 +3,7 @@
 int sum(int n){
     // return n==1 ? 1 : n + sum(n-1);
     int sum=0;
-    for(; n; n--)
-        sum += n;
+    for(; n; sum+=n--);
     return sum;
 }
 
