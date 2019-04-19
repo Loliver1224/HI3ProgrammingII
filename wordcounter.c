@@ -4,9 +4,9 @@
 int main(int argc, char *argv[]){
     FILE *fi;
     char ss[1024], ch;
-    int bytes=0, words=1, lines=1;
+    int bytes=0, words=1, lines=0;
 
-    if(argc != 3){
+    if(argc != 2){
         printf("入力された引数が異なります\n");
         exit(1);
     }
@@ -23,7 +23,7 @@ int main(int argc, char *argv[]){
         if(ch == '\n')
             lines++;
     }
-    printf("%d %d %d\n", lines, words, bytes);
+    printf("%3d %3d %3d %s\n", lines, words, bytes, argv[1]);
 
     fclose(fi);
 
