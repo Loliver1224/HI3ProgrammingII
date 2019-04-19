@@ -2,30 +2,34 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]){
-    FILE *fi;
-    char ss[1024], ch;
+    FILE *fp;
+    char ch;
     int bytes=0, words=1, lines=0;
 
+    // 例外処理
     if(argc != 2){
         printf("入力された引数が異なります\n");
         exit(1);
     }
-
-    if((fi=fopen(argv[1], "r")) == NULL){
+    if((fp=fopen(argv[1], "r")) == NULL){
         printf("ファイルをオープンできません\n");
         exit(1);
     }
 
-    while((ch=fgetc(fi)) != EOF){
+    // カウント
+    while((ch=fgetc(fp)) != EOF){
         bytes++;
         if(ch == ' ')
             words++;
-        if(ch == '\n')
+        if(ch == '\n'){
+            words++;
             lines++;
+        }
     }
+
+    // output
     printf("%3d %3d %3d %s\n", lines, words, bytes, argv[1]);
 
-    fclose(fi);
-
+    fclose(fp);
     return 0;
 }
