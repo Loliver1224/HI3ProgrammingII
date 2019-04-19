@@ -4,7 +4,7 @@
 int main(int argc, char *argv[]){
     FILE *fp;
     char ch;
-    int bytes=0, words=1, lines=0;
+    int bytes=0, words=1, lines=1;
 
     // 例外処理
     if(argc != 2){
@@ -19,16 +19,14 @@ int main(int argc, char *argv[]){
     // カウント
     while((ch=fgetc(fp)) != EOF){
         bytes++;
-        if(ch == ' ')
+        if(ch == ' ' || ch=='\n' || ch=='\t')
             words++;
-        if(ch == '\n'){
-            words++;
+        if(ch == '\n')
             lines++;
-        }
     }
 
     // output
-    printf("%3d %3d %3d %s\n", lines, words, bytes, argv[1]);
+    printf("%3d %3d %3d %s", lines, words, bytes, argv[1]);
 
     fclose(fp);
     return 0;
