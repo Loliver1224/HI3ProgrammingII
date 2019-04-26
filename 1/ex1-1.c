@@ -1,9 +1,10 @@
 #include <stdio.h>
 int main(void){
     FILE *fp;
-    char c;
+    char ch;
     fp = fopen("alice.txt", "r");
-    putchar(fgetc(fp));
+    while((ch=fgetc(fp)) != NULL)
+        putchar(fgetc(fp));
     fclose(fp);
 
     return 0;

@@ -6,17 +6,17 @@ int main(int argc, char *argv[]){
     char ch;
     int bytes=0, words=1, lines=1;
 
-    // 例外処理
+    // exception
     if(argc != 2){
-        printf("入力された引数が異なります\n");
+        puts("The input argument is incorrect.");
         exit(1);
     }
     if((fp=fopen(argv[1], "r")) == NULL){
-        printf("ファイルをオープンできません\n");
+        puts("Cannot open file.");
         exit(1);
     }
 
-    // カウント
+    // count
     while((ch=fgetc(fp)) != EOF){
         bytes++;
         if(ch == ' ' || ch=='\n' || ch=='\t')
@@ -26,7 +26,7 @@ int main(int argc, char *argv[]){
     }
 
     // output
-    printf("%3d %3d %3d %s", lines, words, bytes, argv[1]);
+    printf("%3d %3d %3d %s\n", lines, words, bytes, argv[1]);
 
     fclose(fp);
     return 0;
