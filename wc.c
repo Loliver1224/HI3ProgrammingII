@@ -71,54 +71,54 @@ void print_help(void){
 
 int main(int argc, char *argv[]){
     int i;
-
-    // 標準入力からのは後回し
-    /*if(argc==1){
-        fp = stdin;
-        count(fp);
-        puts(argv[1]);
-    }*/
-
-    for(i=1; i<argc; i++){
-        if(strstr(argv[i], "--help")){
-            print_help();
-            exit(1);
+    for(i=1; i<=argc; i++){
+        if(i<argc && argc>1){
+            if(strstr(argv[i], "--help")){
+                print_help();
+                exit(1);
+            }
+            if(strstr(argv[i], "--version")){
+                puts("my_wc 1.0");
+                exit(1);
+            }
         }
-        if(strstr(argv[i], "--version")){
-            puts("my_wc 1.0");
-            exit(1);
-        }
-        if(argv[1][0] != '-'){
+        if(argc==1 || (argc>1 && i<argc && argv[1][0] != '-')){
             flg_c = true;
             flg_w = true;
             flg_l = true;
-        }else if(argv[i][0] == '-'){
+        }else if(i<argc && argv[i][0] == '-'){
             options++;
-            if (mystrchr('c') || mystrstr("--bytes"))
+            if((mystrchr('c') && !mystrstr("ch")) || mystrstr("--bytes"))
                 flg_c = true;
-            if (mystrchr('l') || mystrstr("--lines"))
+            if((mystrchr('l') && !mystrstr("li") && !mystrstr("le")) || mystrstr("--lines"))
                 flg_l = true;
-            if (mystrchr('m') || mystrstr("--chars"))
+            if((mystrchr('m') && !mystrstr("max")) || mystrstr("--chars"))
                 flg_m = true;
-            if (mystrchr('w') || mystrstr("--words"))
+            if(mystrchr('w') || mystrstr("--words"))
                 flg_w = true;
-            if (mystrchr('L') || mystrstr("--max-line-length"))
+            if(mystrchr('L') || mystrstr("--max-line-length"))
                 flg_L = true;
         }
         if(i>options){
-            fp = fopen(argv[i], "r");
-            bytes=0, chars=0, words=0, lines=0;
-            count(fp);
-            puts(argv[i]);
-            c_sum += bytes;
-            l_sum += lines;
-            m_sum += chars;
-            w_sum += words;
+            if(argc-options == 1){
+                fp = stdin;
+                count(fp);
+                puts("");
+            }else if(i<argc){
+                fp = fopen(argv[i], "r");
+                bytes=0, chars=0, words=0, lines=0;
+                count(fp);
+                puts(argv[i]);
+                fclose(fp);
+                c_sum += bytes;
+                l_sum += lines;
+                m_sum += chars;
+                w_sum += words;
+            }
         }
     }
     if(argc-1>options+1)
         cout(true);
-    fclose(fp);
 
     return 0;
 }
