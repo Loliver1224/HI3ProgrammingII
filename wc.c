@@ -4,12 +4,13 @@
 #include <string.h>
 #include <ctype.h>
 
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
 #define mystrchr(c) strchr(argv[i], c)
 #define mystrstr(s) strstr(argv[i], s)
 
 FILE *fp;
 char ch;
-int bytes=0, chars=0, words=0, lines=0, max_L=0, options=0;
+int bytes=0, chars=0, words=0, lines=0, line_length=0, max_L=0, options=0;
 bool flg_c=false, flg_l=false, flg_m=false, flg_w=false, flg_L=false;
 bool flg_help=false, flg_version=false;
 
@@ -30,8 +31,12 @@ void count(FILE *fp){
     bool flg_in_c = false;
     while((ch=fgetc(fp)) != EOF){
         bytes++;
-        if(ch=='\n')
+        line_length++;
+        if(ch=='\n'){
             lines++;
+            max_L = MAX(max_L, line_length);
+            line_length = 0;
+        }
         if(isspace(ch) && flg_in_c){
             words++;
             flg_in_c = 0;
