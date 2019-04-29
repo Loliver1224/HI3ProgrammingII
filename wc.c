@@ -13,31 +13,20 @@ char ch;
 int bytes=0, chars=0, words=0, lines=0, line_length=0, max_L=0, options=0;
 int c_sum=0, l_sum=0, m_sum=0, w_sum=0;
 bool flg_c=false, flg_l=false, flg_m=false, flg_w=false, flg_L=false;
-bool flg_help=false, flg_version=false;
 
-void cout(void){
+void cout(bool sum){
     if(flg_l)
-        printf("%5d ", lines);
+        printf("%5d ", sum ? l_sum : lines);
     if(flg_w)
-        printf("%5d ", words);
+        printf("%5d ", sum ? w_sum : words);
     if(flg_m)
-        printf("%5d ", chars);
+        printf("%5d ", sum ? m_sum : chars);
     if(flg_c)
-        printf("%5d ", bytes);
+        printf("%5d ", sum ? c_sum : bytes);
     if(flg_L)
         printf("%5d ", max_L);
-}
-
-void output_sum(void){
-    if(flg_l)
-        printf("%5d ", l_sum);
-    if(flg_w)
-        printf("%5d ", w_sum);
-    if(flg_m)
-        printf("%5d ", m_sum);
-    if(flg_c)
-        printf("%5d ", c_sum);
-    puts("合計");
+    if(sum)
+        puts("合計");
 }
 
 void count(FILE *fp){
@@ -59,7 +48,7 @@ void count(FILE *fp){
             flg_in_c = true;
         }
     }
-    cout();
+    cout(false);
 }
 
 void print_help(void){
@@ -128,7 +117,7 @@ int main(int argc, char *argv[]){
         }
     }
     if(argc-1>options+1)
-        output_sum();
+        cout(true);
     fclose(fp);
 
     return 0;
