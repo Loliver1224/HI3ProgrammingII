@@ -33,20 +33,19 @@ void count(FILE *fp){
     bool flg_in_c = false;
     while((ch=fgetc(fp)) != EOF){
         bytes++;
+        chars++;  // マルチバイト文字非対応
         line_length++;
         if(ch=='\n'){
             lines++;
-            max_L = MAX(max_L, line_length);
+            max_L = MAX(max_L, line_length-1);
             line_length = 0;
         }
         if(isspace(ch) && flg_in_c){
             words++;
             flg_in_c = 0;
         }
-        if(isgraph(ch)){
-            chars++;
+        if(isgraph(ch))
             flg_in_c = true;
-        }
     }
     cout(false);
 }
