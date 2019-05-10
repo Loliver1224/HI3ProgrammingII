@@ -9,10 +9,9 @@
 #define mystrstr(s) strstr(argv[i], s)
 
 FILE *fp;
-int ch;
-int bytes=0, chars=0, words=0, lines=0, line_len=0, max_L=1, options=0;
-int c_sum=0, l_sum=0, m_sum=0, w_sum=0, total_maxL=1;
-bool flg_c=false, flg_l=false, flg_m=false, flg_w=false, flg_L=false;
+int bytes, chars, words, lines, line_len, max_L;
+int c_sum, l_sum, m_sum, w_sum, total_maxL = -1;
+bool flg_c, flg_l, flg_m, flg_w, flg_L;
 
 void cout(bool sum){
     if(flg_l)
@@ -30,8 +29,10 @@ void cout(bool sum){
 }
 
 void count(FILE *fp){
-    max_L = -1;
+    int ch;
     bool flg_in_c = false;
+    max_L = -1;
+
     while((ch=fgetc(fp)) != EOF){
         bytes++;
         line_len++;
@@ -42,13 +43,15 @@ void count(FILE *fp){
         }
         if(isspace(ch) && flg_in_c){
             words++;
-            flg_in_c = 0;
+            flg_in_c = false;
         }
         if(isgraph(ch))
             flg_in_c = true;
         if(ch<0x80 || ch>0xBF)
             chars++;
     }
+    if(max_L < 0)
+        max_L = line_len;
     total_maxL = MAX(total_maxL, max_L);
     cout(false);
 }
@@ -72,7 +75,7 @@ void print_help(void){
 }
 
 int main(int argc, char *argv[]){
-    int i;
+    int i, options=0;
     for(i=1; i<=argc; i++){
         if(i<argc && argc>1){
             if(strstr(argv[i], "--help")){
@@ -107,7 +110,10 @@ int main(int argc, char *argv[]){
                 count(fp);
                 puts("");
             }else if(i<argc){
-                fp = fopen(argv[i], "r");
+                if((fp=fopen(argv[i], "r")) == NULL){
+                    puts("Cannot open file.");
+                    exit(1);
+                }
                 bytes=0, chars=0, words=0, lines=0;
                 count(fp);
                 puts(argv[i]);
@@ -119,7 +125,7 @@ int main(int argc, char *argv[]){
             }
         }
     }
-    if(argc-1>options+1)
+    if(argc-1 > options+1)
         cout(true);
 
     return 0;
