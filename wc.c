@@ -13,7 +13,7 @@ int bytes, chars, words, lines, line_len, max_L;
 int c_sum, l_sum, m_sum, w_sum, total_maxL = -1;
 bool flg_c, flg_l, flg_m, flg_w, flg_L;
 
-void cout(bool sum){
+output(bool sum){
     if(flg_l)
         printf("%5d ", sum ? l_sum : lines);
     if(flg_w)
@@ -28,9 +28,10 @@ void cout(bool sum){
         puts("合計");
 }
 
-void count(FILE *fp){
+count(){
     int ch;
     bool flg_in_c = false;
+    bytes=0, chars=0, words=0, lines=0;
     max_L = -1;
 
     while((ch=fgetc(fp)) != EOF){
@@ -53,10 +54,10 @@ void count(FILE *fp){
     if(max_L < 0)
         max_L = line_len;
     total_maxL = MAX(total_maxL, max_L);
-    cout(false);
+    output(false);
 }
 
-void print_help(void){
+print_help(){
     puts("Usage: wc [OPTION]... [FILE]...");
     puts("  or:  wc [OPTION]... --files0-from=F");
     puts("Print newline, word, and byte counts for each FILE, and a total line if");
@@ -74,17 +75,18 @@ void print_help(void){
     puts("      -- version バージョン情報を表示して終了 ");
 }
 
-int main(int argc, char *argv[]){
-    int i, options=0;
+main(int argc, char *argv[]){
+    int i, opt_args=0;
+
     for(i=1; i<=argc; i++){
         if(i<argc && argc>1){
-            if(strstr(argv[i], "--help")){
+            if(mystrstr("--help")){
                 print_help();
-                exit(1);
+                exit(0);
             }
-            if(strstr(argv[i], "--version")){
+            if(mystrstr("--version")){
                 puts("my_wc 1.0");
-                exit(1);
+                exit(0);
             }
         }
         if(argc==1 || (argc>1 && i<argc && argv[1][0] != '-')){
@@ -92,7 +94,7 @@ int main(int argc, char *argv[]){
             flg_w = true;
             flg_l = true;
         }else if(i<argc && argv[i][0] == '-'){
-            options++;
+            opt_args++;
             if((mystrchr('c') && !mystrstr("ch")) || mystrstr("--bytes"))
                 flg_c = true;
             if((mystrchr('l') && !mystrstr("li") && !mystrstr("le")) || mystrstr("--lines"))
@@ -103,19 +105,17 @@ int main(int argc, char *argv[]){
                 flg_w = true;
             if(mystrchr('L') || mystrstr("--max-line-length"))
                 flg_L = true;
-        }
-        if(i>options){
-            if(argc-options == 1){
+        }else
+            if(argc-opt_args == 1){
                 fp = stdin;
-                count(fp);
+                count();
                 puts("");
             }else if(i<argc){
                 if((fp=fopen(argv[i], "r")) == NULL){
                     puts("Cannot open file.");
                     exit(1);
                 }
-                bytes=0, chars=0, words=0, lines=0;
-                count(fp);
+                count();
                 puts(argv[i]);
                 fclose(fp);
                 c_sum += bytes;
@@ -123,10 +123,7 @@ int main(int argc, char *argv[]){
                 m_sum += chars;
                 w_sum += words;
             }
-        }
     }
-    if(argc-1 > options+1)
-        cout(true);
-
-    return 0;
+    if(argc-1 > opt_args+1)
+        output(true);
 }
