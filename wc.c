@@ -28,7 +28,7 @@ output(bool sum){
         puts("合計");
 }
 
-count(){
+count(bool s_in){
     int ch;
     bool flg_in_c = false;
     bytes=0, chars=0, words=0, lines=0;
@@ -54,6 +54,8 @@ count(){
     if(max_L < 0)
         max_L = line_len;
     total_maxL = MAX(total_maxL, max_L);
+    if(s_in)
+        words++;
     output(false);
 }
 
@@ -75,7 +77,7 @@ print_help(){
     puts("      -- version バージョン情報を表示して終了 ");
 }
 
-main(int argc, char *argv[]){
+main(int argc, char **argv){
     int i, opt_args=0;
 
     for(i=1; i<=argc; i++){
@@ -105,24 +107,25 @@ main(int argc, char *argv[]){
                 flg_w = true;
             if(mystrchr('L') || mystrstr("--max-line-length"))
                 flg_L = true;
-        }else
-            if(argc-opt_args == 1){
-                fp = stdin;
-                count();
-                puts("");
-            }else if(i<argc){
-                if((fp=fopen(argv[i], "r")) == NULL){
-                    puts("Cannot open file.");
-                    exit(1);
-                }
-                count();
-                puts(argv[i]);
-                fclose(fp);
-                c_sum += bytes;
-                l_sum += lines;
-                m_sum += chars;
-                w_sum += words;
+        }
+        if(argc-opt_args == 1){
+            fp = stdin;
+            count(true);
+            puts("");
+            exit(0);
+        }else if(i<argc && argv[i][0] != '-'){
+            if((fp=fopen(argv[i], "r")) == NULL){
+                puts("Cannot open file.");
+                exit(1);
             }
+            count(false);
+            puts(argv[i]);
+            fclose(fp);
+            c_sum += bytes;
+            l_sum += lines;
+            m_sum += chars;
+            w_sum += words;
+        }
     }
     if(argc-1 > opt_args+1)
         output(true);
