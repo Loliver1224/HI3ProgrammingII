@@ -6,74 +6,68 @@
 #define DIGIT 100    // 要素内の数値の上限-1
 
 void store_data_random(int *data, int size){
-    // 起動毎に異なる乱数を発生
+    int i;
     srand((unsigned)time(NULL));
+
     // 0 ~ digitの範囲で生成した乱数を順に格納
-    for (int i = 0; i < size; i++)
+    for(i=0; i<size; i++)
         data[i] = rand() % DIGIT;
 }
 
 void output(int *data, int n){
+    int i;
     putchar('{');
-    for (int i=0; i<n; i++)
-        if (i < n-1)
-            printf("%2d, ", data[i]);
-        else
-            printf("%2d}\n", data[i]);
+    for(i=0; i<n; i++)
+        printf(i < n-1 ? "%3d," : "%3d}\n", data[i]);
 }
 
 void swap(int *i, int *j){
-    int temp = *i;
+    int tmp = *i;
     *i = *j;
-    *j = temp;
+    *j = tmp;
 }
 
 // 昇順に選択ソート
 void up_sort(int *data, int n){
-    int i, j, k, min;
+    int i, j, min;
     for(i=0; i<n-1; i++){
-        min = data[i];
-        k = i;
-        for(j=i+1; j<n; j++){
-            if(data[j] <= min){
-                min = data[j];
-                k = j;
-            }
-        }
-        swap(&data[i], &data[k]);
+        min = i;
+        for(j=i+1; j<n; j++)
+            if(data[j] <= data[min])
+                min = j;
+        swap(&data[i], &data[min]);
     }
 }
 
 // 降順に選択ソート
 void down_sort(int *data, int n){
-    int i, j, k, max;
+    int i, j, max;
     for(i=0; i<n-1; i++){
-        max = data[i];
-        k = i;
-        for(j=i+1; j<n; j++){
-            if(data[j] >= max){
-                max = data[j];
-                k = j;
-            }
-        }
-        swap(&data[i], &data[k]);
+        max = i;
+        for(j=i+1; j<n; j++)
+            if(data[j] >= data[max])
+                max = j;
+        swap(&data[i], &data[max]);
     }
 }
 
 int main(void){
     int data[ELEMENTS], size;
 
-    printf("Input elements(max = %d): ", ELEMENTS);
+    printf("Input elements (max = %d): ", ELEMENTS);
     scanf("%d", &size);
     store_data_random(data, size);
 
-    printf("Before: ");
+    printf("Before: \t");
     output(data, size);
+    puts("---- After ----");
+
+    printf("up_sort:\t");
     up_sort(data, size);
-    printf("up_sort : ");
     output(data, size);
+
+    printf("down_sort:\t");
     down_sort(data, size);
-    printf("down_sort: ");
     output(data, size);
 
     return 0;
