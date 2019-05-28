@@ -2,11 +2,15 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define sort qsort(data, n, sizeof(dict), cmp)
+
 typedef struct{
 	char name[20];
 	float height;
 	float weight;
 } dict;
+
+int cmd;
 
 void input(dict *data, int n){
 	int i;
@@ -21,32 +25,18 @@ void output(dict *data, int n){
 	putchar('\n');
 }
 
-int heightcmp(const void *a, const void *b){
-	return ((dict *)a)->height - ((dict *)b)->height;
-}
-
-int heightrcmp(const void *a, const void *b){
-	return ((dict *)b)->height - ((dict *)a)->height;
-}
-
-int weightcmp(const void *a, const void *b){
-	return ((dict *)a)->weight - ((dict *)b)->weight;
-}
-
-int weightrcmp(const void *a, const void *b){
-	return ((dict *)b)->weight - ((dict *)a)->weight;
-}
-
-int namecmp(const void *a, const void *b){
-    return strcmp(((dict *)a)->name, ((dict *)b)->name);
-}
-
-int namercmp(const void *a, const void *b){
-    return strcmp(((dict *)b)->name, ((dict *)a)->name);
+int cmp(const void *a, const void *b){
+	switch(cmd){
+	case 1: return ((dict *)b)->height - ((dict *)a)->height;
+	case 2: return ((dict *)a)->height - ((dict *)b)->height;
+	case 3: return ((dict *)b)->weight - ((dict *)a)->weight;
+	case 4: return ((dict *)a)->weight - ((dict *)b)->weight;
+	case 5: return strcmp(((dict *)a)->name, ((dict *)b)->name);
+	case 6: return strcmp(((dict *)b)->name, ((dict *)a)->name);
+	}
 }
 
 int menu(dict *data, int n){
-	int cmd;
 	puts("================= Sorting Menu =============");
 	puts("    1:  身長順(高い順)   2:身長順(低い順) ");
 	puts("    3:  体重順(重い順)   4:体重順(軽い順) ");
@@ -60,23 +50,17 @@ int menu(dict *data, int n){
 
 	switch(cmd){
 		case 1: puts("----- 身長を降順に整列 ------");
-		    	qsort(data, n, sizeof(dict), heightrcmp);
-				break;
+		    	sort; break;
 		case 2: puts("----- 身長を昇順に整列 ------");
-				qsort(data, n, sizeof(dict), heightcmp);
-				break;
+				sort; break;
 		case 3: puts("----- 体重を降順に整列 ------");
-                qsort(data, n, sizeof(dict), weightrcmp);
-				break;
+                sort; break;
 		case 4: puts("----- 体重を昇順に整列 ------");
-                qsort(data, n, sizeof(dict), weightcmp);
-				break;
+                sort; break;
         case 5: puts("----- 名前を昇順に整列 ------");
-                qsort(data, n, sizeof(dict), namecmp);
-                break;
+                sort; break;
         case 6: puts("----- 名前を降順に整列 ------");
-                qsort(data, n, sizeof(dict), namercmp);
-                break;
+                sort; break;
 		case 0: return cmd;
 		default:puts("\a0 ~ 6の数値を入力してください.");
 				goto reject;
