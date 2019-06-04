@@ -12,7 +12,7 @@ void io(char name[][M], double *height, double *weight, int *sex, int n, int is_
         if (is_in)
             scanf("%s %lf %lf %c", name[i], &height[i], &weight[i], &sex[i]);
         else
-            printf("%s\t%.1f\t%.1f\t%c\n", name[i], height[i], weight[i], sex[i]);
+            printf("%s\t| %.1f\t| %.1f\t|  %c\n", name[i], height[i], weight[i], sex[i]);
     putchar('\n');
 }
 
@@ -25,17 +25,17 @@ int cmp(double a, double b, int cmd){
     }
 }
 
-void double_swap(double *l, double *r){
+void swap_double(double *l, double *r){
     double tmp = *l;
     *l = *r;
     *r = tmp;
 }
 
-void swap(char name[][M], double *height, double *weight, int *sex, int l, int r){
+void swap_data(char name[][M], double *height, double *weight, int *sex, int l, int r){
     char tmp_name[M], tmp_sex;
 
-    double_swap(&height[l], &height[r]);
-    double_swap(&weight[l], &weight[r]);
+    swap_double(&height[l], &height[r]);
+    swap_double(&weight[l], &weight[r]);
     strcpy(tmp_name, name[l]);
     strncpy(name[l], name[r], M);
     strncpy(name[r], tmp_name, M);
@@ -45,18 +45,18 @@ void swap(char name[][M], double *height, double *weight, int *sex, int l, int r
 }
 
 void sort(char name[][M], double *height, double *weight, int *sex, int n, int cmd){
-    int i, j, scmp;
+    int i, j, cmp_result;
     double *data = cmd <= 2 ? height : weight;
 
     for (i = 0; i < n; i++)
         for (j = 0; j < n - i - 1; j++)
             if(cmd <= 4){
                 if (cmp(data[j], data[j + 1], cmd))
-                    swap(DATA, j, j + 1);
+                    swap_data(DATA, j, j + 1);
             }else{
-                scmp = strcmp(name[j], name[j + 1]);
-                if (cmd%5 ? scmp < 0 : scmp > 0)
-                    swap(DATA, j, j + 1);
+                cmp_result = strcmp(name[j], name[j + 1]);
+                if (cmd%5 ? cmp_result < 0 : cmp_result > 0)
+                    swap_data(DATA, j, j + 1);
             }
 }
 
@@ -75,17 +75,19 @@ int menu(char name[][M], double *height, double *weight, int *sex, int n){
     putchar('\n');
 
     switch (cmd){
-        case 1: puts("----- 身長を降順に整列 ------"); break;
-        case 2: puts("----- 身長を昇順に整列 ------"); break;
-        case 3: puts("----- 体重を降順に整列 ------"); break;
-        case 4: puts("----- 体重を昇順に整列 ------"); break;
-        case 5: puts("----- 名前を昇順に整列 ------"); break;
-        case 6: puts("----- 名前を降順に整列 ------"); break;
+        case 1: puts("------ 身長を降順に整列 ------"); break;
+        case 2: puts("------ 身長を昇順に整列 ------"); break;
+        case 3: puts("------ 体重を降順に整列 ------"); break;
+        case 4: puts("------ 体重を昇順に整列 ------"); break;
+        case 5: puts("------ 名前を昇順に整列 ------"); break;
+        case 6: puts("------ 名前を降順に整列 ------"); break;
         case 0: return 0;
         default:puts("\a0 ~ 6の数値を入力してください.");
                 goto reject;
     }
     sort(DATA, n, cmd);
+    puts("名前\t|  身長\t|  体重\t| 性別");
+    puts("------------------------------");
     io(DATA, n, 0);
     return cmd;
 }
