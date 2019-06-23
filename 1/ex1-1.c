@@ -4,7 +4,7 @@ int main(void){
     char ch;
     fp = fopen("alice.txt", "r");
     while((ch=fgetc(fp)) != NULL)
-        putchar(fgetc(fp));
+        putchar(ch);
     fclose(fp);
 
     return 0;
