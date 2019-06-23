@@ -5,8 +5,9 @@
 #define N 1000
 #define M 20
 #define DATA name,height,weight,sex
+#define ARGS char name[][M], double *height, double *weight, int *sex
 
-void io(char name[][M], double *height, double *weight, int *sex, int n, int is_in){
+void io(ARGS, int n, int is_in){
     int i;
     for (i = 0; i < n; i++)
         if (is_in)
@@ -31,7 +32,7 @@ void swap_double(double *l, double *r){
     *r = tmp;
 }
 
-void swap_data(char name[][M], double *height, double *weight, int *sex, int l, int r){
+void swap_data(ARGS, int l, int r){
     char tmp_name[M], tmp_sex;
 
     swap_double(&height[l], &height[r]);
@@ -44,7 +45,7 @@ void swap_data(char name[][M], double *height, double *weight, int *sex, int l, 
     sex[r] = tmp_sex;
 }
 
-void sort(char name[][M], double *height, double *weight, int *sex, int n, int cmd){
+void sort(ARGS, int n, int cmd){
     int i, j, cmp_result;
     double *data = cmd <= 2 ? height : weight;
 
@@ -60,7 +61,7 @@ void sort(char name[][M], double *height, double *weight, int *sex, int n, int c
             }
 }
 
-int menu(char name[][M], double *height, double *weight, int *sex, int n){
+int menu(ARGS, int n){
     int cmd;
 
     puts("=============== Sorting Menu ===============");
