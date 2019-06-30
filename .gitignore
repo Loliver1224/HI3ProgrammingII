@@ -1,3 +1,5 @@
 .vscode/
 type/
 *.exe
+a.out
+stdin.dat
