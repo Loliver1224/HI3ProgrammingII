@@ -6,22 +6,20 @@
 
 typedef struct{
     char name[20];
-    float height;
-    float weight;
+    double height;
+    double weight;
+    int sex;
 } dict;
 
 int cmd;
 
-void input(dict *data, int n){
+void io(dict *data, int n, int is_in){
     int i;
-    for(i=0; i<n; i++)
-        scanf("%s %f %f", data[i].name, &data[i].height, &data[i].weight);
-}
-
-void output(dict *data, int n){
-    int i;
-    for(i=0; i<n; i++)
-        printf("%s\t%.1f %.1f\n", data[i].name, data[i].height, data[i].weight);
+    for (i = 0; i < n; i++)
+        if (is_in)
+            scanf("%s %lf %lf %c", data[i].name, &data[i].height, &data[i].weight, &data[i].sex);
+        else
+            printf("%s\t| %.1f\t| %.1f\t|  %c\n", data[i].name, data[i].height, data[i].weight, data[i].sex);
     putchar('\n');
 }
 
@@ -50,23 +48,21 @@ int menu(dict *data, int n){
     putchar('\n');
 
     switch(cmd){
-        case 1: puts("----- 身長を降順に整列 ------");
-                SORT; break;
-        case 2: puts("----- 身長を昇順に整列 ------");
-                SORT; break;
-        case 3: puts("----- 体重を降順に整列 ------");
-                SORT; break;
-        case 4: puts("----- 体重を昇順に整列 ------");
-                SORT; break;
-        case 5: puts("----- 名前を昇順に整列 ------");
-                SORT; break;
-        case 6: puts("----- 名前を降順に整列 ------");
-                SORT; break;
+        case 1: puts("----- 身長を降順に整列 ------"); break;
+        case 2: puts("----- 身長を昇順に整列 ------"); break;
+        case 3: puts("----- 体重を降順に整列 ------"); break;
+        case 4: puts("----- 体重を昇順に整列 ------"); break;
+        case 5: puts("----- 名前を昇順に整列 ------"); break;
+        case 6: puts("----- 名前を降順に整列 ------"); break;
         case 0: return 0;
         default:puts("\a0 ~ 6の数値を入力してください.");
                 goto reject;
     }
-    output(data, n);
+    SORT;
+    puts("名前\t|  身長\t|  体重\t| 性別");
+    puts("------------------------------");
+    io(data, n, 0);
+
     return cmd;
 }
 
@@ -78,8 +74,9 @@ int main(void){
     putchar('\n');
     dict data[n];
 
-    puts("データを入力してください（名前 身長 体重）");
-    input(data, n);
+    puts("\nデータを以下の形式で一行ごとに入力してください");
+    puts("名前 身長 体重 性別（M / F）");
+    io(data, n, 1);
 
     while(menu(data, n) != 0);
 
