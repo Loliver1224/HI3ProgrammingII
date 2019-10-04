@@ -38,8 +38,8 @@ int main(void){
 
     // output(data, n); // データの画面出力
 
-    if ((fo = fopen("data_file_s", "wb")) == NULL){
-        printf("File not open:data_file\n");
+    if ((fo = fopen("seiseki_data", "wb")) == NULL){
+        printf("File not open:seiseki_data\n");
         exit(EXIT_FAILURE);
     }
     // FILEへのブロック出力

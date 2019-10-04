@@ -26,8 +26,8 @@ int main(void){
     Students data[N];
     int n;
 
-    if ((fi = fopen("data_file_s", "rb")) == NULL){
-        printf("File not open:data_file\n");
+    if ((fi = fopen("seiseki_data", "rb")) == NULL){
+        printf("File not open:seiseki_data\n");
         exit(EXIT_FAILURE);
     }
     // FILEからのブロック入力
@@ -62,6 +62,7 @@ int menu(Students *data, int n){
         case 3:
             puts("どの科目の成績順にしますか");
             printf("%s...1  %s...2  %s...3\n", subjects[0], subjects[1], subjects[2]);
+            printf(">> ");
             scanf("%d", &cmd4subject);
             printf("    ----- %sの成績を降順に整列 -----    \n", subjects[cmd4subject-1]);
             break;
