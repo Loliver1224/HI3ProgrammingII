@@ -1,10 +1,10 @@
 sum_ = 0
-i = 0
+cnt = 0
 while True:
     n = input()
+    cnt += 1
     if n == "end":
         break
     sum_ += int(n)
-    i += 1
-avg = sum_ // i
+avg = sum_ // cnt
 print("sum: " + str(sum_) + "\navg: " + str(avg))
